@@ -14,7 +14,7 @@ const activities = [
   "Ben Dover Simulator 2016",
 ];
 
-module.exports = function () {
+export default function () {
   const index = Math.floor(Math.random() * (activities.length - 1));
   return activities[index];
 };
