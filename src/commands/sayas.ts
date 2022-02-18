@@ -1,24 +1,27 @@
-import { DMChannel, Message, TextChannel, Webhook } from "discord.js";
+import { Message, TextChannel, Webhook } from "discord.js";
 
 export default async function (msg: Message, args: string[]) {
-  if (args) {
-    const authorAv = await msg.author.avatarURL();
+  if (args.length > 1) {
     const channel = msg.channel;
+    const authorAv = msg.author.avatarURL();
+    if (authorAv === null) return
     msg.delete();
 
-    (channel as TextChannel).createWebhook("sayas command");
-    const webhooks = await (channel as TextChannel).fetchWebhooks();
-    const webhook = (webhooks.first() as Webhook);
+    if (channel.type != "GUILD_TEXT") return
+    channel.createWebhook("sayas command");
+    const webhooks = await channel.fetchWebhooks();
+    const webhook = webhooks.first();
+    if (webhook == undefined) return
 
     try {
       const name = args.shift();
 
-      var webAv = (authorAv as string);
-      if (args[0].includes("https") || args[0].includes("http")) {
-        webAv = (args.shift() as string);
+      var webAv = authorAv;
+      if (args[0].substring(0, 4) == "http") {
+        webAv = args.shift() as string;
       }
 
-      webhook.send({
+      await webhook.send({
         username: name,
         avatarURL: webAv,
         content: args.join(" ")
@@ -28,5 +31,7 @@ export default async function (msg: Message, args: string[]) {
     }
 
     webhook.delete();
+  } else {
+    console.log("needs more args")
   }
 };

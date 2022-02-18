@@ -12,8 +12,10 @@ import pog from "./commands/pog";
 // import prefix from "./commands/prefix";
 import test from "./commands/test";
 import nickname from "./commands/nickname";
+import salute from "./commands/salute";
+import wordle from "./commands/wordle";
 
-const commands = { ping, pong, mcstat, admin, say, sayas, help, pog, /* prefix, */ test, nickname };
+const commands = { ping, pong, mcstat, admin, say, sayas, help, pog, /* prefix, */ test, nickname, salute, wordle };
 
 // function checkPrefix(data: JSON, msg: Message): string {
 //   // Find/create the prefix for the message's guild.
@@ -26,10 +28,9 @@ const commands = { ping, pong, mcstat, admin, say, sayas, help, pog, /* prefix, 
 // }
 
 export default async function (msg: Message) {
-  let data = fs.readFileSync("./botData.json").toJSON();
+  // let data = fs.readFileSync("./botData.json").toJSON();
   let tokens = msg.content.split(" ");
   let command = tokens.shift();
-  console.log('hi')
 
   // const prefix = checkPrefix(data, msg);
   const prefix = "pogdev!";

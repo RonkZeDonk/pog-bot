@@ -30,7 +30,12 @@ export default async function (msg: Message, args: string[]) {
     let embed;
 
     if (checkOnline(jsonRes)) {
-      embed = new Discord.MessageEmbed()
+      embed = new Discord.MessageEmbed({
+        footer: {
+          text: "API: mc-api.net, Command by: RonkZeDonk",
+          iconURL: FooterImage,
+        }
+      })
         .setColor("#10a326")
         .setTitle(`Server Info for: "${args[0]}"`)
         .setDescription(
@@ -40,10 +45,6 @@ export default async function (msg: Message, args: string[]) {
           (await checkImg(jsonRes))
             ? DefaultServerImage
             : jsonRes.favicon
-        )
-        .setFooter(
-          "API: mc-api.net, Command by: RonkZeDonk",
-          FooterImage
         )
         .setTimestamp();
 
@@ -77,16 +78,17 @@ export default async function (msg: Message, args: string[]) {
       // Add requested by user
       embed.addField("Requested by: ", reqUser);
     } else {
-      embed = new Discord.MessageEmbed()
+      embed = new Discord.MessageEmbed({
+        footer: {
+          text: "API: mc-api.net, Command by: RonkZeDonk",
+          iconURL: FooterImage,
+        }
+      })
         .setColor("#db1f25")
         .setTitle(`Server Info for: "${args[0]}"`)
         .setDescription(`Server is offline or query is off...`)
         .setThumbnail(DefaultServerImage)
         .addField("Requested by: ", reqUser)
-        .setFooter(
-          "API: mc-api.net, Command by: RonkZeDonk",
-          FooterImage
-        )
         .setTimestamp();
     }
 

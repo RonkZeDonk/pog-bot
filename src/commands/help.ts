@@ -6,8 +6,15 @@ export default async function (msg: Message, args: string[], prefix: string) {
   let avatarURL = await msg.author.avatarURL()
   if (avatarURL == null) return
 
-  const embed = new MessageEmbed()
-    .setAuthor("Requested by: " + msg.author.tag, avatarURL)
+  const embed = new MessageEmbed({
+    author: {
+      name: "Requested by: " + msg.author.tag,
+      iconURL: avatarURL
+    },
+    footer: {
+      text: "Bot by: RonkZeDonk#0045"
+    }
+  })
     .setTitle("Pog")
     .setDescription("Commands List")
     .addField(
@@ -41,7 +48,6 @@ export default async function (msg: Message, args: string[], prefix: string) {
     .addField(prefix + "nickname", "Get your current nickname", false)
     .addField(prefix + "admin", "no", false)
     .addField(prefix + "pog", "pog", false)
-    .setFooter("Bot by: RonkZeDonk#0045");
   msg.channel.send({embeds: [embed]});
   msg.delete();
 };
