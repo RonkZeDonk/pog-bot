@@ -1,5 +1,4 @@
-import fetch from "node-fetch";
-import Discord, { Message, MessageEmbed } from "discord.js";
+import Discord, { Message } from "discord.js";
 
 const DefaultServerImage = "https://static.wikia.nocookie.net/minecraft/images/f/fe/GrassNew.png/revision/latest/"
 const FooterImage = "https://static.wikia.nocookie.net/minecraft_gamepedia/images/5/50/Book_JE2_BE2.png/revision/latest/"
