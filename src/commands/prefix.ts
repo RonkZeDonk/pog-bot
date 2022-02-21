@@ -1,45 +1,28 @@
-// NOT USED
-// @ts-nocheck
-
 import { Message } from "discord.js";
+import fs from "fs";
 
-const fs = require("fs");
+export default function (msg: Message, args: string[]) {
+  let data = JSON.parse(fs.readFileSync("./botData.json").toString());
 
-export default function (msg: Message, args: string[], prefix: string) {
-  let data = JSON.parse(fs.readFileSync("./botData.json"));
+  if (!msg.guild) return;
 
   if (args[0]) {
-    console.log(args[0]);
-
     data.servers[msg.guild.id].prefix = args[0];
     try {
       fs.writeFileSync("./botData.json", JSON.stringify(data, null, 2));
-      console.log(
-        "Wrote: " +
-          JSON.stringify(data.servers[msg.guild.id].prefix) +
-          "\nNow in file as: " +
-          JSON.parse(fs.readFileSync("./botData.json")).servers[msg.guild.id]
-            .prefix
+      const newPrefix = data.servers[msg.guild.id].prefix;
+      msg.reply(
+        `The server's prefix is now: '${newPrefix}'\n` +
+          `Example command: '${newPrefix}help'`
       );
     } catch (err) {
       console.error(err);
     }
-
-    msg.reply(
-      "The server's prefix is now: '" +
-        data.servers[msg.guild.id].prefix +
-        "'\nExample command: '" +
-        data.servers[msg.guild.id].prefix +
-        "help'"
-    );
   } else {
+    const prefix = data.servers[msg.guild.id].prefix;
     msg.reply(
-      "The server's prefix is: '" +
-        prefix +
-        "'" +
-        "\nExample command: '" +
-        prefix +
-        "help'"
+      `The server's prefix is: '${prefix}'\n` +
+        `Example command: '${prefix}help'`
     );
   }
-};
+}

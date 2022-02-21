@@ -1,26 +1,32 @@
 import { Message } from "discord.js";
-import { readdirSync } from "fs"
+import { readdirSync, readFileSync } from "fs"
 
 let commands: { [key: string]: any } = {}
 
 const tscommands = readdirSync(__dirname + "/commands").filter(value => value.endsWith(".ts"))
 
+// Maybe revert it to manual importing; this is slow on the pi
 for (let i = 0; i < tscommands.length; i++) {
   const commandName = tscommands[i].slice(0, -3)
   const path = `./commands/${commandName}`
-  console.log(`Importing the command "${commandName}" from ${path}`)
-
-  let command = require(path)
-  commands[commandName] = command['default']
+  
+  import(path).then(module => {
+    commands[commandName] = module["default"]
+    console.log(`Imported "${commandName}" from ${path}`)
+  });
 }
-
-console.log("Done importing!\n")
 
 export default async function (msg: Message) {
   let tokens = msg.content.split(" ");
   let command = tokens.shift();
 
-  const prefix = "pogdev!";
+  if (!msg.guild) return
+  let prefix: string = JSON.parse(readFileSync("./botData.json").toString()).servers[msg.guild.id].prefix;
+  // const prefix = "pogdev!";
+
+  let optional = {
+    "prefix": prefix
+  }
 
   if (command?.substring(0, prefix.length) === prefix) {
     // Remove the prefix from the command
@@ -28,7 +34,7 @@ export default async function (msg: Message) {
 
     try {
       if (command != undefined)
-      commands[command](msg, tokens, prefix);
+      commands[command](msg, tokens, optional);
     } catch (err) {
       console.log(`<commandHandler.ts> Command not found '${command}'`);
     }

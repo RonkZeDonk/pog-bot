@@ -1,8 +1,11 @@
 import { Message, MessageEmbed } from "discord.js";
+import fs from "fs"
 
 const Discord = require("discord.js");
 
-export default async function (msg: Message, args: string[], prefix: string) {
+export default async function (msg: Message, args: string[], optional: { [index: string]: any }) {
+  const prefix = optional["prefix"]
+
   let avatarURL = await msg.author.avatarURL()
   if (avatarURL == null) return
 
