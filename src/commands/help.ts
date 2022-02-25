@@ -1,7 +1,4 @@
 import { Message, MessageEmbed } from "discord.js";
-import fs from "fs"
-
-const Discord = require("discord.js");
 
 export default async function (msg: Message, args: string[], optional: { [index: string]: any }) {
   const prefix = optional["prefix"]
